@@ -4,14 +4,14 @@
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=Miranda_r9s
+kernel.string=
 do.devicecheck=1
 do.modules=0
 do.systemless=1
 do.cleanup=1
 do.cleanuponabort=0
 device.name1=r9s
-supported.versions=
+supported.versions=16
 supported.patchlevels=
 supported.vendorpatchlevels=
 '; } # end properties
@@ -51,18 +51,6 @@ if [ ! -e /vendor/etc/fstab.qcom ]; then
 			do_patch=0
 		fi
 	fi
-fi
-
-# Check for the presence of "first_stage_mount" in /vendor/etc/fstab only for /system or /vendor
-if [ $do_patch -eq 1 ]; then
-	if grep "first_stage_mount" /vendor/etc/fstab.qcom | grep -E -q '(/system|/vendor)'; then
-		ui_print "Two-stage init ROM detected, no need to patch"
-	else
-		ui_print "Legacy ROM detected, patching cmdline..."
-		patch_cmdline "fstabdt_keep" "fstabdt_keep"
-	fi
-else
-	ui_print "Skipping cmdline patch because vendor could not be mounted!"
 fi
 
 # Enable bpf spoofing
